@@ -78,4 +78,25 @@ export const dashboardAPI = {
   getDashboard: () => api.get('/dashboard')
 };
 
+// Immigration API
+export const immigrationAPI = {
+  // Goals
+  getGoals: (params) => api.get('/immigration/goals', { params }),
+  getGoal: (id) => api.get(`/immigration/goals/${id}`),
+  createGoal: (data) => api.post('/immigration/goals', data),
+  updateGoal: (id, data) => api.put(`/immigration/goals/${id}`, data),
+  deleteGoal: (id) => api.delete(`/immigration/goals/${id}`),
+  
+  // Plan
+  generatePlan: (goalId) => api.post(`/immigration/goals/${goalId}/generate-plan`),
+  getPlan: (goalId) => api.get(`/immigration/goals/${goalId}/plan`),
+  
+  // Risks
+  getRisks: (goalId) => api.get(`/immigration/goals/${goalId}/risks`),
+  updateRisks: (goalId, data) => api.post(`/immigration/goals/${goalId}/risks`, data),
+  
+  // Templates
+  getTemplates: () => api.get('/immigration/templates')
+};
+
 export default api;

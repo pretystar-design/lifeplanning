@@ -48,6 +48,12 @@ function Navbar() {
                 Budget
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/immigration">
+                <i className="bi bi-globe-americas me-1"></i>
+                移民顾问
+              </Link>
+            </li>
           </ul>
           <ul className="navbar-nav">
             <li className="nav-item dropdown">
