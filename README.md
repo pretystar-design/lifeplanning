@@ -1,6 +1,6 @@
 # LifePlanning
 
-A comprehensive personal life planning and goal tracking application with habit tracking, financial budgeting, and immigration advisory features.
+A comprehensive personal life planning and goal tracking application with habit tracking, financial budgeting, immigration advisory, and AI-powered financial advisory features.
 
 ## Quick Start
 
@@ -105,6 +105,27 @@ Frontend will run on http://localhost:3000
 - Document checklist with tracking
 - Risk matrix visualization (High/Medium/Low)
 
+#### 7. AI Finance Advisor (AI理财顾问)
+- **理财目标管理**
+  - 支持多种目标类型：退休养老、子女教育、购房首付、婚嫁储备、旅游基金、应急基金、财务自由等
+  - 自定义目标金额、目标日期和每月定投金额
+  - 实时进度追踪
+- **AI智能投资方案生成**
+  - 基于风险偏好的资产配置建议（股票、债券、基金、现金）
+  - 五种风险等级模板：保守型、稳健型、平衡型、进取型、激进型
+  - 自动计算预期收益率和预期最终金额
+- **投资收益模拟**
+  - 复利计算模型
+  - 可视化收益增长曲线
+  - 可调节参数的模拟测试
+- **风险评估**
+  - 五维风险分析：市场风险、流动性风险、通胀风险、时间风险、产品风险
+  - 综合风险评分
+  - 个性化风险缓解建议
+- **市场洞察**
+  - 各类资产的市场趋势分析
+  - 投资建议提示
+
 ### API Endpoints
 
 #### Authentication
@@ -161,6 +182,19 @@ Frontend will run on http://localhost:3000
 - `GET /api/v1/immigration/goals/:id/risks` - Get risk assessment
 - `POST /api/v1/immigration/goals/:id/risks` - Update risk assessment
 - `GET /api/v1/immigration/templates` - Get all immigration templates
+
+#### AI Finance Advisor
+- `GET /api/v1/finance/advisor/options` - Get goal types and risk tolerance options
+- `GET /api/v1/finance/advisor/goals` - List financial goals (supports `?status=` and `?goal_type=` filters)
+- `POST /api/v1/finance/advisor/goals` - Create financial goal
+- `GET /api/v1/finance/advisor/goals/:id` - Get financial goal details
+- `PUT /api/v1/finance/advisor/goals/:id` - Update financial goal
+- `DELETE /api/v1/finance/advisor/goals/:id` - Delete financial goal
+- `POST /api/v1/finance/advisor/goals/:id/generate-plan` - AI generate investment plan
+- `GET /api/v1/finance/advisor/goals/:id/plan` - Get investment plan
+- `POST /api/v1/finance/advisor/goals/:id/simulate` - Run investment simulation
+- `GET /api/v1/finance/advisor/goals/:id/risks` - Get risk assessment
+- `GET /api/v1/finance/advisor/market-insights` - Get market insights
 
 #### Dashboard
 - `GET /api/v1/dashboard` - Get dashboard statistics

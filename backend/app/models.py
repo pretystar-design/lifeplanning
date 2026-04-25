@@ -300,3 +300,105 @@ class ImmigrationRisk(db.Model):
             'mitigation_suggestion': self.mitigation_suggestion,
             'created_at': self.created_at.isoformat()
         }
+
+# ==================== Finance Advisor Models ====================
+
+class FinancialGoal(db.Model):
+    """理财目标模型"""
+    __tablename__ = 'financial_goals'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    goal_type = db.Column(db.String(50), nullable=False)  # 养老/教育/购房/旅游/应急基金等
+    name = db.Column(db.String(200), nullable=False)  # 目标名称
+    target_amount = db.Column(db.Float, nullable=False)  # 目标金额
+    current_amount = db.Column(db.Float, default=0)  # 当前金额
+    target_date = db.Column(db.Date)  # 目标日期
+    risk_tolerance = db.Column(db.String(20), default='balanced')  # 保守/稳健/平衡/进取/激进
+    monthly_investment = db.Column(db.Float, default=0)  # 每月定投金额
+    notes = db.Column(db.Text)  # 备注信息
+    status = db.Column(db.String(20), default='active')  # active, completed, paused
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    user = db.relationship('User', backref='financial_goals')
+    investment_plan = db.relationship('InvestmentPlan', backref='goal', uselist=False, cascade='all, delete-orphan')
+    risks = db.relationship('InvestmentRisk', backref='goal', lazy=True, cascade='all, delete-orphan')
+    
+    def to_dict(self):
+        progress = 0
+        if self.target_amount > 0:
+            progress = min(100, round((self.current_amount / self.target_amount) * 100, 2))
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'goal_type': self.goal_type,
+            'name': self.name,
+            'target_amount': self.target_amount,
+            'current_amount': self.current_amount,
+            'target_date': self.target_date.isoformat() if self.target_date else None,
+            'risk_tolerance': self.risk_tolerance,
+            'monthly_investment': self.monthly_investment,
+            'notes': self.notes,
+            'status': self.status,
+            'progress': progress,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
+        }
+
+
+class InvestmentPlan(db.Model):
+    """投资方案模型"""
+    __tablename__ = 'investment_plans'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    goal_id = db.Column(db.Integer, db.ForeignKey('financial_goals.id'), nullable=False, unique=True)
+    portfolio_allocation = db.Column(db.JSON)  # 资产配置比例 {"stocks": 40, "bonds": 35, "funds": 20, "cash": 5}
+    expected_return = db.Column(db.Float, default=0)  # 预期年化收益率
+    expected_final_amount = db.Column(db.Float, default=0)  # 预期最终金额
+    risk_level = db.Column(db.String(20), default='medium')  # low, medium, high
+    generated_by_ai = db.Column(db.Boolean, default=True)
+    generated_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'goal_id': self.goal_id,
+            'portfolio_allocation': self.portfolio_allocation,
+            'expected_return': self.expected_return,
+            'expected_final_amount': self.expected_final_amount,
+            'risk_level': self.risk_level,
+            'generated_by_ai': self.generated_by_ai,
+            'generated_at': self.generated_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
+        }
+
+
+class InvestmentRisk(db.Model):
+    """投资风险评估模型"""
+    __tablename__ = 'investment_risks'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    goal_id = db.Column(db.Integer, db.ForeignKey('financial_goals.id'), nullable=False)
+    risk_type = db.Column(db.String(50), nullable=False)  # market, liquidity, inflation, timing, product
+    risk_name = db.Column(db.String(100))  # 风险名称
+    risk_probability = db.Column(db.Float, default=0)  # 发生概率 0-1
+    risk_impact = db.Column(db.Float, default=0)  # 影响程度 0-1
+    risk_level = db.Column(db.String(20), default='medium')  # low, medium, high
+    mitigation_strategy = db.Column(db.Text)  # 缓解策略
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'goal_id': self.goal_id,
+            'risk_type': self.risk_type,
+            'risk_name': self.risk_name,
+            'risk_probability': self.risk_probability,
+            'risk_impact': self.risk_impact,
+            'risk_level': self.risk_level,
+            'mitigation_strategy': self.mitigation_strategy,
+            'created_at': self.created_at.isoformat()
+        }

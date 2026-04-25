@@ -99,4 +99,30 @@ export const immigrationAPI = {
   getTemplates: () => api.get('/immigration/templates')
 };
 
+// Finance Advisor API
+export const financeAPI = {
+  // Options
+  getOptions: () => api.get('/finance/advisor/options'),
+  
+  // Goals
+  getGoals: (params) => api.get('/finance/advisor/goals', { params }),
+  getGoal: (id) => api.get(`/finance/advisor/goals/${id}`),
+  createGoal: (data) => api.post('/finance/advisor/goals', data),
+  updateGoal: (id, data) => api.put(`/finance/advisor/goals/${id}`, data),
+  deleteGoal: (id) => api.delete(`/finance/advisor/goals/${id}`),
+  
+  // Investment Plan
+  generatePlan: (goalId) => api.post(`/finance/advisor/goals/${goalId}/generate-plan`),
+  getPlan: (goalId) => api.get(`/finance/advisor/goals/${goalId}/plan`),
+  
+  // Simulation
+  simulate: (goalId, data) => api.post(`/finance/advisor/goals/${goalId}/simulate`, data),
+  
+  // Risks
+  getRisks: (goalId) => api.get(`/finance/advisor/goals/${goalId}/risks`),
+  
+  // Market Insights
+  getMarketInsights: () => api.get('/finance/advisor/market-insights')
+};
+
 export default api;

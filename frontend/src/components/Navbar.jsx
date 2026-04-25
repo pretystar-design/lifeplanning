@@ -54,6 +54,12 @@ function Navbar() {
                 移民顾问
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/finance">
+                <i className="bi bi-graph-up me-1"></i>
+                理财顾问
+              </Link>
+            </li>
           </ul>
           <ul className="navbar-nav">
             <li className="nav-item dropdown">

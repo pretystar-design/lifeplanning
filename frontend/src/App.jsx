@@ -13,6 +13,9 @@ import BudgetDetailPage from './pages/BudgetDetailPage';
 import ImmigrationPage from './pages/ImmigrationPage';
 import ImmigrationFormPage from './pages/ImmigrationFormPage';
 import ImmigrationPlanDetailPage from './pages/ImmigrationPlanDetailPage';
+import FinancePage from './pages/FinancePage';
+import FinanceGoalFormPage from './pages/FinanceGoalFormPage';
+import FinancePlanDetailPage from './pages/FinancePlanDetailPage';
 
 function App() {
   return (
@@ -75,6 +78,27 @@ function App() {
           <Route path="/immigration/:id/plan" element={
             <ProtectedRoute>
               <ImmigrationPlanDetailPage />
+            </ProtectedRoute>
+          } />
+          {/* Finance Advisor Routes */}
+          <Route path="/finance" element={
+            <ProtectedRoute>
+              <FinancePage />
+            </ProtectedRoute>
+          } />
+          <Route path="/finance/new" element={
+            <ProtectedRoute>
+              <FinanceGoalFormPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/finance/:id/edit" element={
+            <ProtectedRoute>
+              <FinanceGoalFormPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/finance/:id/plan" element={
+            <ProtectedRoute>
+              <FinancePlanDetailPage />
             </ProtectedRoute>
           } />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
