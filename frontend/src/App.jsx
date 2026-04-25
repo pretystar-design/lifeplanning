@@ -10,6 +10,9 @@ import HabitsPage from './pages/HabitsPage';
 import HabitDetailPage from './pages/HabitDetailPage';
 import BudgetsPage from './pages/BudgetsPage';
 import BudgetDetailPage from './pages/BudgetDetailPage';
+import ImmigrationPage from './pages/ImmigrationPage';
+import ImmigrationFormPage from './pages/ImmigrationFormPage';
+import ImmigrationPlanDetailPage from './pages/ImmigrationPlanDetailPage';
 
 function App() {
   return (
@@ -51,6 +54,27 @@ function App() {
           <Route path="/budgets/:id" element={
             <ProtectedRoute>
               <BudgetDetailPage />
+            </ProtectedRoute>
+          } />
+          {/* Immigration Routes */}
+          <Route path="/immigration" element={
+            <ProtectedRoute>
+              <ImmigrationPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/immigration/new" element={
+            <ProtectedRoute>
+              <ImmigrationFormPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/immigration/:id/edit" element={
+            <ProtectedRoute>
+              <ImmigrationFormPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/immigration/:id/plan" element={
+            <ProtectedRoute>
+              <ImmigrationPlanDetailPage />
             </ProtectedRoute>
           } />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />

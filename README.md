@@ -1,6 +1,6 @@
 # LifePlanning
 
-A comprehensive personal life planning and goal tracking application with habit tracking and financial budgeting features.
+A comprehensive personal life planning and goal tracking application with habit tracking, financial budgeting, and immigration advisory features.
 
 ## Quick Start
 
@@ -90,6 +90,21 @@ Frontend will run on http://localhost:3000
 - Budget status overview
 - Quick action buttons
 
+#### 6. Immigration Advisory (移民顾问)
+- Create immigration goals with target country, type, and budget
+- Generate comprehensive immigration plans automatically
+- Detailed risk assessment with mitigation suggestions
+- Support for multiple countries:
+  - 加拿大 (Canada) - Express Entry
+  - 美国 (USA) - EB-1A, EB-2, EB-3
+  - 澳大利亚 (Australia) - 189, 190, 491
+  - 新西兰 (New Zealand) - Skilled Migrant
+  - 英国 (UK) - Innovator Founder
+  - 葡萄牙/西班牙/希腊 (Portugal/Spain/Greece) - Golden Visa
+- Application process timeline visualization
+- Document checklist with tracking
+- Risk matrix visualization (High/Medium/Low)
+
 ### API Endpoints
 
 #### Authentication
@@ -135,6 +150,18 @@ Frontend will run on http://localhost:3000
 - `DELETE /api/v1/budgets/:id/expenses/:expenseId` - Delete expense
 - `GET /api/v1/budgets/:id/summary` - Get budget summary
 
+#### Immigration Advisory
+- `GET /api/v1/immigration/goals` - List immigration goals
+- `POST /api/v1/immigration/goals` - Create immigration goal
+- `GET /api/v1/immigration/goals/:id` - Get immigration goal details
+- `PUT /api/v1/immigration/goals/:id` - Update immigration goal
+- `DELETE /api/v1/immigration/goals/:id` - Delete immigration goal
+- `POST /api/v1/immigration/goals/:id/generate-plan` - Generate immigration plan
+- `GET /api/v1/immigration/goals/:id/plan` - Get immigration plan
+- `GET /api/v1/immigration/goals/:id/risks` - Get risk assessment
+- `POST /api/v1/immigration/goals/:id/risks` - Update risk assessment
+- `GET /api/v1/immigration/templates` - Get all immigration templates
+
 #### Dashboard
 - `GET /api/v1/dashboard` - Get dashboard statistics
 
@@ -165,7 +192,7 @@ lifeplanning/
 ├── backend/
 │   ├── app/
 │   │   ├── __init__.py       # Flask app factory
-│   │   ├── models.py          # SQLAlchemy models
+│   │   ├── models.py          # SQLAlchemy models (including Immigration models)
 │   │   ├── config.py          # Configuration
 │   │   └── routes/
 │   │       ├── __init__.py
@@ -173,7 +200,8 @@ lifeplanning/
 │   │       ├── goals.py       # Goals routes
 │   │       ├── habits.py      # Habits routes
 │   │       ├── budgets.py     # Budgets routes
-│   │       └── dashboard.py   # Dashboard routes
+│   │       ├── dashboard.py   # Dashboard routes
+│   │       └── immigration.py # Immigration advisory routes
 │   │   └── utils/
 │   │       ├── __init__.py
 │   │       └── auth.py        # Auth utilities
@@ -182,7 +210,7 @@ lifeplanning/
 ├── frontend/
 │   ├── src/
 │   │   ├── api/
-│   │   │   └── index.js       # API client
+│   │   │   └── index.js       # API client (including immigration API)
 │   │   ├── components/
 │   │   │   ├── Navbar.jsx
 │   │   │   └── ProtectedRoute.jsx
@@ -197,42 +225,41 @@ lifeplanning/
 │   │   │   ├── HabitsPage.jsx
 │   │   │   ├── HabitDetailPage.jsx
 │   │   │   ├── BudgetsPage.jsx
-│   │   │   └── BudgetDetailPage.jsx
+│   │   │   ├── BudgetDetailPage.jsx
+│   │   │   ├── ImmigrationPage.jsx
+│   │   │   ├── ImmigrationFormPage.jsx
+│   │   │   └── ImmigrationPlanDetailPage.jsx
 │   │   ├── App.jsx
 │   │   ├── main.jsx
 │   │   └── index.css
-│   ├── index.html
-│   ├── package.json
-│   └── vite.config.js
-├── init/                       # Initialization scripts
+│   └── package.json
 └── README.md
 ```
 
-## Usage
+## Immigration Advisory Feature
 
-1. Start the backend server:
-   ```bash
-   cd backend
-   python run.py
-   ```
+### Supported Countries and Programs
 
-2. Start the frontend development server:
-   ```bash
-   cd frontend
-   npm run dev
-   ```
+| Country | Program | Type |
+|---------|---------|------|
+| 🇨🇦 Canada | Express Entry | Skilled Immigration |
+| 🇺🇸 USA | EB-1A/EB-2/EB-3 | Employment-Based |
+| 🇦🇺 Australia | 189/190/491 | Skilled Migration |
+| 🇳🇿 New Zealand | Skilled Migrant | Skilled Immigration |
+| 🇬🇧 UK | Innovator Founder | Business Immigration |
+| 🇵🇹🇪🇸🇬🇷 EU | Golden Visa | Investment Immigration |
 
-3. Open http://localhost:3000 in your browser
+### Risk Types
 
-4. Register a new account or login with the default test credentials
+- **政策风险 (Policy Risk)**: Changes in immigration policies
+- **资金风险 (Financial Risk)**: Insufficient funds for application and settlement
+- **时间风险 (Timeline Risk)**: Long processing times and queue waiting
+- **材料风险 (Documents Risk)**: Incomplete or non-compliant documentation
+- **语言风险 (Language Risk)**: Language proficiency requirements not met
 
-## Environment Variables
+### Test Flow
 
-### Backend
-- `SECRET_KEY` - Flask secret key
-- `DATABASE_URL` - Database URI (default: SQLite)
-- `JWT_SECRET_KEY` - JWT secret key
-- `JWT_ACCESS_TOKEN_EXPIRES` - Token expiration in seconds
-
-### Frontend
-- `VITE_API_URL` - Backend API URL (default: /api/v1)
+1. Create immigration goal → `/immigration/new`
+2. Generate plan → Click "生成方案" button
+3. View plan details → `/immigration/:id/plan`
+4. Review risk assessment → Switch to "风险评估" tab

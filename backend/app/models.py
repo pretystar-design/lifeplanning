@@ -220,3 +220,83 @@ class Expense(db.Model):
             'date': self.date.isoformat(),
             'created_at': self.created_at.isoformat()
         }
+
+# ==================== Immigration Models ====================
+
+class ImmigrationGoal(db.Model):
+    """移民目标模型"""
+    __tablename__ = 'immigration_goals'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    target_country = db.Column(db.String(100), nullable=False)  # 目标国家
+    immigration_type = db.Column(db.String(50), nullable=False)  # 技术移民/投资移民/留学移民/团聚移民等
+    current_status = db.Column(db.String(50), default='planning')  # planning, preparing, applying, approved, rejected
+    target_date = db.Column(db.Date)  # 目标移民日期
+    budget = db.Column(db.Float, default=0)  # 预算
+    notes = db.Column(db.Text)  # 备注信息
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    user = db.relationship('User', backref='immigration_goals')
+    plan = db.relationship('ImmigrationPlan', backref='goal', uselist=False, cascade='all, delete-orphan')
+    risks = db.relationship('ImmigrationRisk', backref='goal', lazy=True, cascade='all, delete-orphan')
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'target_country': self.target_country,
+            'immigration_type': self.immigration_type,
+            'current_status': self.current_status,
+            'target_date': self.target_date.isoformat() if self.target_date else None,
+            'budget': self.budget,
+            'notes': self.notes,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
+        }
+
+
+class ImmigrationPlan(db.Model):
+    """移民方案模型"""
+    __tablename__ = 'immigration_plans'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    goal_id = db.Column(db.Integer, db.ForeignKey('immigration_goals.id'), nullable=False, unique=True)
+    plan_data = db.Column(db.JSON)  # 完整的方案数据
+    generated_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'goal_id': self.goal_id,
+            'plan_data': self.plan_data,
+            'generated_at': self.generated_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
+        }
+
+
+class ImmigrationRisk(db.Model):
+    """移民风险评估模型"""
+    __tablename__ = 'immigration_risks'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    goal_id = db.Column(db.Integer, db.ForeignKey('immigration_goals.id'), nullable=False)
+    risk_type = db.Column(db.String(50), nullable=False)  # policy, financial, timeline, documents, language, other
+    risk_level = db.Column(db.String(20), nullable=False)  # high, medium, low
+    risk_description = db.Column(db.Text, nullable=False)
+    mitigation_suggestion = db.Column(db.Text)  # 风险缓解建议
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'goal_id': self.goal_id,
+            'risk_type': self.risk_type,
+            'risk_level': self.risk_level,
+            'risk_description': self.risk_description,
+            'mitigation_suggestion': self.mitigation_suggestion,
+            'created_at': self.created_at.isoformat()
+        }
