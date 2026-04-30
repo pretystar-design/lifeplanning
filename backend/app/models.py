@@ -402,3 +402,49 @@ class InvestmentRisk(db.Model):
             'mitigation_strategy': self.mitigation_strategy,
             'created_at': self.created_at.isoformat()
         }
+
+# ==================== Advisor Conversation Models ====================
+
+class AdvisorConversation(db.Model):
+    """AI理财顾问对话会话模型"""
+    __tablename__ = 'advisor_conversations'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    title = db.Column(db.String(200), default='新对话')
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    user = db.relationship('User', backref='advisor_conversations')
+    messages = db.relationship('AdvisorMessage', backref='conversation', lazy=True, cascade='all, delete-orphan', order_by='AdvisorMessage.created_at')
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'title': self.title,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat(),
+            'message_count': len(self.messages)
+        }
+
+
+class AdvisorMessage(db.Model):
+    """AI理财顾问对话消息模型"""
+    __tablename__ = 'advisor_messages'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    conversation_id = db.Column(db.Integer, db.ForeignKey('advisor_conversations.id'), nullable=False)
+    role = db.Column(db.String(20), nullable=False)  # user / assistant
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'conversation_id': self.conversation_id,
+            'role': self.role,
+            'content': self.content,
+            'created_at': self.created_at.isoformat()
+        }

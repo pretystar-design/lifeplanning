@@ -90,15 +90,21 @@ function FinancePage() {
       <Navbar />
       <div className="container py-4">
         {/* Header */}
-        <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
           <div>
             <h2 className="mb-1">🎯 理财顾问</h2>
             <p className="text-muted mb-0">智能规划，稳健投资</p>
           </div>
-          <Link to="/finance/new" className="btn btn-primary">
-            <i className="bi bi-plus-lg me-2"></i>
-            创建理财目标
-          </Link>
+          <div className="d-flex gap-2 flex-wrap">
+            <Link to="/finance/chat" className="btn btn-outline-primary">
+              <i className="bi bi-robot me-2"></i>
+              AI理财顾问
+            </Link>
+            <Link to="/finance/new" className="btn btn-primary">
+              <i className="bi bi-plus-lg me-2"></i>
+              创建理财目标
+            </Link>
+          </div>
         </div>
 
         {/* Summary Cards */}
@@ -180,9 +186,13 @@ function FinancePage() {
               <i className="bi bi-inbox fs-1 text-muted mb-3 d-block"></i>
               <h5 className="text-muted">暂无理财目标</h5>
               <p className="text-muted mb-3">创建您的第一个理财目标，开启智能投资之旅</p>
-              <Link to="/finance/new" className="btn btn-primary">
+              <Link to="/finance/new" className="btn btn-primary me-2">
                 <i className="bi bi-plus-lg me-2"></i>
                 创建理财目标
+              </Link>
+              <Link to="/finance/chat" className="btn btn-outline-primary">
+                <i className="bi bi-robot me-2"></i>
+                AI理财顾问
               </Link>
             </div>
           </div>
@@ -275,13 +285,22 @@ function FinancePage() {
                       </div>
                     </div>
 
-                    <Link
-                      to={`/finance/${goal.id}/plan`}
-                      className="btn btn-outline-primary btn-sm w-100"
-                    >
-                      <i className="bi bi-robot me-2"></i>
-                      AI生成投资方案
-                    </Link>
+                    <div className="d-flex gap-2">
+                      <Link
+                        to={`/finance/${goal.id}/plan`}
+                        className="btn btn-outline-primary btn-sm flex-grow-1"
+                      >
+                        <i className="bi bi-clipboard-data me-2"></i>
+                        查看方案
+                      </Link>
+                      <Link
+                        to="/finance/chat"
+                        className="btn btn-primary btn-sm flex-grow-1"
+                      >
+                        <i className="bi bi-robot me-2"></i>
+                        咨询AI
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>

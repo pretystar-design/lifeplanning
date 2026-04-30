@@ -125,4 +125,38 @@ export const financeAPI = {
   getMarketInsights: () => api.get('/finance/advisor/market-insights')
 };
 
+// AI Advisor Chat API
+export const advisorAPI = {
+  // Conversations
+  getConversations: () => api.get('/finance/advisor/conversations'),
+  createConversation: (data) => api.post('/finance/advisor/conversations', data),
+  getConversation: (id) => api.get(`/finance/advisor/conversations/${id}`),
+  deleteConversation: (id) => api.delete(`/finance/advisor/conversations/${id}`),
+  
+  // Messages
+  getMessages: (conversationId) => api.get(`/finance/advisor/conversations/${conversationId}/messages`),
+  
+  // Chat (non-streaming)
+  chat: (data) => api.post('/finance/advisor/chat', data),
+  
+  // Chat (streaming) - returns EventSource
+  getStreamUrl: (data) => {
+    const token = localStorage.getItem('token');
+    const params = new URLSearchParams({
+      message: data.message,
+      conversation_id: data.conversation_id || ''
+    });
+    return `/api/v1/finance/advisor/chat/stream?${params}`;
+  },
+  
+  // Complete streaming and save message
+  completeStream: (data) => api.post('/finance/advisor/chat/stream-complete', data),
+  
+  // Quick Questions
+  getQuickQuestions: () => api.get('/finance/advisor/quick-questions'),
+  
+  // User Context
+  getUserContext: () => api.get('/finance/advisor/user-context')
+};
+
 export default api;

@@ -12,7 +12,7 @@ def create_app():
     CORS(app)
     db.init_app(app)
     
-    from app.routes import auth, goals, dashboard, habits, budgets, immigration, finance
+    from app.routes import auth, goals, dashboard, habits, budgets, immigration, finance, advisor
     app.register_blueprint(auth.bp)
     app.register_blueprint(goals.bp)
     app.register_blueprint(dashboard.bp)
@@ -20,6 +20,7 @@ def create_app():
     app.register_blueprint(budgets.bp)
     app.register_blueprint(immigration.bp)
     app.register_blueprint(finance.bp)
+    app.register_blueprint(advisor.bp)
     
     with app.app_context():
         db.create_all()

@@ -16,6 +16,7 @@ import ImmigrationPlanDetailPage from './pages/ImmigrationPlanDetailPage';
 import FinancePage from './pages/FinancePage';
 import FinanceGoalFormPage from './pages/FinanceGoalFormPage';
 import FinancePlanDetailPage from './pages/FinancePlanDetailPage';
+import AdvisorChatPage from './pages/AdvisorChatPage';
 
 function App() {
   return (
@@ -101,7 +102,14 @@ function App() {
               <FinancePlanDetailPage />
             </ProtectedRoute>
           } />
+          <Route path="/finance/chat" element={
+            <ProtectedRoute>
+              <AdvisorChatPage />
+            </ProtectedRoute>
+          } />
+          {/* Default redirect */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
